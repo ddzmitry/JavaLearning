@@ -15,7 +15,7 @@ public class StackOverFlowSurvey {
     private static final String SALARY_MIDPOINT_BUCKET = "salary_midpoint_bucket";
 
     public static void main(String[] args) throws Exception {
-
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkSession session = SparkSession.builder().appName("StackOverFlowSurvey").master("local[1]").getOrCreate();
 
@@ -30,7 +30,7 @@ public class StackOverFlowSurvey {
         responses.show(20);
 
         System.out.println("=== Print the so_region and self_identification columns of gender table ===");
-        responses.select(col("so_region"),  col("self_identification")).show();
+        responses.select(col("so_region"),  col("self_identification"));
 
         System.out.println("=== Print records where the response is from Afghanistan ===");
         responses.filter(col("country").equalTo("Afghanistan")).show();
@@ -65,6 +65,22 @@ public class StackOverFlowSurvey {
 
         System.out.println("=== Group by salary bucket ===");
         responseWithSalaryBucket.groupBy(SALARY_MIDPOINT_BUCKET).count().orderBy(col(SALARY_MIDPOINT_BUCKET)).show();
+
+
+
+//        responseWithSalaryBucket.filter(col("gender").equalTo("Female")).show();
+//        responseWithSalaryBucket.filter(col("gender").equalTo("Male")).show();
+
+        Dataset<Row> responseWithSalaryBucket_FEMALE = responseWithSalaryBucket.filter(col("gender").equalTo("Female"));
+        Dataset<Row> responseWithSalaryBucket_Male = responseWithSalaryBucket.filter(col("gender").equalTo("Male"));
+
+        RelationalGroupedDataset avg_female = responseWithSalaryBucket_FEMALE.select(col("age_range"),col(SALARY_MIDPOINT_BUCKET)).groupBy("age_range");
+        RelationalGroupedDataset avg_male = responseWithSalaryBucket_Male.select(col("age_range"),col(SALARY_MIDPOINT_BUCKET)).groupBy("age_range");
+        System.out.println("=== Print records where Female ===");
+        avg_female.agg(avg(SALARY_MIDPOINT_BUCKET)).orderBy("age_range").show();
+        System.out.println("=== Print records where Male ===");
+        avg_male.agg(avg(SALARY_MIDPOINT_BUCKET)).orderBy("age_range").show();
+
 
         session.stop();
     }

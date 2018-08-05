@@ -1,9 +1,45 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
 
+import com.sparkTutorial.rdd.commons.Utils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.PairFunction;
+import scala.Function;
+import scala.Int;
+import scala.Tuple2;
+import scala.util.parsing.combinator.testing.Str;
+
+import java.util.ArrayList;
+
 public class AverageHousePriceProblem {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkConf conf = new SparkConf().setAppName("wordCounts").setMaster("local[4]");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        JavaRDD<String> lines_fromcsv = sc.textFile("in/RealEstate.csv").filter(x->!x.contains("Bedrooms"));
+
+        JavaPairRDD<String, AvgCount> housePricePairRdd = lines_fromcsv.mapToPair(
+                line -> new Tuple2<>(line.split(",")[3],
+                        new AvgCount(1, Double.parseDouble(line.split(",")[2]))));
+
+//        housePricePairRdd.collect().forEach(x -> System.out.println(x));
+
+        JavaPairRDD<String, AvgCount> housePriceTotal = housePricePairRdd.reduceByKey(
+                (x, y) -> new AvgCount(x.getCount() + y.getCount(), x.getTotal() + y.getTotal()));
+        housePriceTotal.collect().forEach(x -> System.out.println(x));
+
+//        JavaPairRDD<String,ArrayList> aggregated = rdd_house_data.reduceByKey()
+
 
         /* Create a Spark program to read the house data from in/RealEstate.csv,
            output the average price for houses with different number of bedrooms.

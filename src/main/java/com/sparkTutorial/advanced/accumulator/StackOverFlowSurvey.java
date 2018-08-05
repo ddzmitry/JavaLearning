@@ -13,15 +13,17 @@ import scala.Option;
 public class StackOverFlowSurvey {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("StackOverFlowSurvey").setMaster("local[1]");
 
         SparkContext sparkContext = new SparkContext(conf);
         JavaSparkContext javaSparkContext = new JavaSparkContext(sparkContext);
-
+// Create Accumulator
         final LongAccumulator total = new LongAccumulator();
         final LongAccumulator missingSalaryMidPoint = new LongAccumulator();
-
+//        Register Accumulator
         total.register(sparkContext, Option.apply("total"), false);
         missingSalaryMidPoint.register(sparkContext, Option.apply("missing salary middle point"), false);
 

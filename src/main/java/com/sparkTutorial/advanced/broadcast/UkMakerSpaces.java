@@ -15,6 +15,8 @@ import java.util.*;
 public class UkMakerSpaces {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("UkMakerSpaces").setMaster("local[1]");
         JavaSparkContext javaSparkContext = new JavaSparkContext(conf);

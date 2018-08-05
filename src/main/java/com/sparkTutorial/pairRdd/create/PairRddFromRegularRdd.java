@@ -1,5 +1,7 @@
 package com.sparkTutorial.pairRdd.create;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -13,6 +15,8 @@ import java.util.List;
 public class PairRddFromRegularRdd {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+        Logger.getLogger("org").setLevel(Level.ERROR);
 
         SparkConf conf = new SparkConf().setAppName("create").setMaster("local[1]");
 

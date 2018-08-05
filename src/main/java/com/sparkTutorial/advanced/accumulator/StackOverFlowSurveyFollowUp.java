@@ -13,8 +13,11 @@ import scala.Option;
 public class StackOverFlowSurveyFollowUp {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
+
         Logger.getLogger("org").setLevel(Level.ERROR);
-        SparkConf conf = new SparkConf().setAppName("StackOverFlowSurvey").setMaster("local[1]");
+        SparkConf conf = new SparkConf().setAppName("StackOverFlowSurvey").setMaster("local[4]");
         SparkContext sparkContext = new SparkContext(conf);
         JavaSparkContext javaSparkContext = new JavaSparkContext(sparkContext);
 

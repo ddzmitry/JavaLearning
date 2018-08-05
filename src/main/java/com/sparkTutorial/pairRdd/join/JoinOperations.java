@@ -11,6 +11,7 @@ import java.util.Arrays;
 public class JoinOperations {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
 
         SparkConf conf = new SparkConf().setAppName("JoinOperations").setMaster("local[1]");
 

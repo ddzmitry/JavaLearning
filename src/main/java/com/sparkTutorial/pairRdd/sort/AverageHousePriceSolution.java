@@ -13,6 +13,8 @@ import scala.Tuple2;
 public class AverageHousePriceSolution {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("averageHousePriceSolution").setMaster("local[3]");
         JavaSparkContext sc = new JavaSparkContext(conf);

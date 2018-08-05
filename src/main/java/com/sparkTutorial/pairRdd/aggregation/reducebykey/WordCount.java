@@ -17,6 +17,7 @@ import java.util.Map;
 public class WordCount {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
 
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("wordCounts").setMaster("local[3]");
