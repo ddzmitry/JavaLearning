@@ -14,6 +14,8 @@ import static com.sparkTutorial.rdd.commons.Utils.COMMA_DELIMITER;
 public class RddDatasetConversion {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
+
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("StackOverFlowSurvey").setMaster("local[1]");
 

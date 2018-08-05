@@ -11,6 +11,7 @@ import static org.apache.spark.sql.functions.*;
 public class UkMakerSpaces {
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
 
         Logger.getLogger("org").setLevel(Level.ERROR);
 
@@ -19,6 +20,7 @@ public class UkMakerSpaces {
         Dataset<Row> makerSpace = session.read().option("header", "true").csv("in/uk-makerspaces-identifiable-data.csv");
 
         Dataset<Row> postCode = session.read().option("header", "true").csv("in/uk-postcode.csv")
+//                concat_ws concats multible colums with string
                 .withColumn("PostCode", concat_ws("", col("PostCode"), lit(" ")));
 
         System.out.println("=== Print 20 records of makerspace table ===");

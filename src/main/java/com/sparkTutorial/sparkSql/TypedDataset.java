@@ -17,6 +17,7 @@ public class TypedDataset {
     private static final String SALARY_MIDPOINT_BUCKET = "salaryMidpointBucket";
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("hadoop.home.dir", "c:\\hadoop\\");
 
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkSession session = SparkSession.builder().appName("StackOverFlowSurvey").master("local[*]").getOrCreate();
@@ -30,7 +31,7 @@ public class TypedDataset {
                 col("age_midpoint").as("ageMidPoint").cast("integer"),
                 col("occupation"),
                 col("salary_midpoint").as("salaryMidPoint").cast("integer"));
-
+//        cast as an object
         Dataset<Response> typedDataset = responseWithSelectedColumns.as(Encoders.bean(Response.class));
 
         System.out.println("=== Print out schema ===");
@@ -40,6 +41,7 @@ public class TypedDataset {
         typedDataset.show(20);
 
         System.out.println("=== Print the responses from Afghanistan ===");
+//        we can call functions from object on rows
         typedDataset.filter((FilterFunction<Response>) response -> response.getCountry().equals("Afghanistan")).show();
 
         System.out.println("=== Print the count of occupations ===");
